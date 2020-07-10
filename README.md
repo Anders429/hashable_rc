@@ -1,17 +1,17 @@
 Hashable wrappers for reference countings.
 
-Provides hashable wrappers for [`Rc<T>`] and [`Weak<T>`] references
-with the types [`HashableRc<T>`] and [`HashableWeak<T>`],
+Provides hashable wrappers for `Rc<T>` and `Weak<T>` references
+with the types `HashableRc<T>` and `HashableWeak<T>`,
 respectively. This allows use of both strong and weak reference
-countings in hash-based data structures, such as [`HashMap`] or
-[`HashSet`].
+countings in hash-based data structures, such as `HashMap` or
+`HashSet`.
 
 # Quick Start
 
-The most common use cases are wrapping [`Rc<T>`] or [`Weak<T>`] in
-[`HashableRc<T>`] or [`HashableWeak<T>`] respectively to be 
+The most common use cases are wrapping `Rc<T>` or `Weak<T>` in
+`HashableRc<T>` or `HashableWeak<T>` respectively to be 
 contained in a hash-based container. An example of using both types
-as keys in a [`HashMap`] follows.
+as keys in a `HashMap` follows.
 
 ```
 use std::collections::HashMap;
@@ -36,5 +36,5 @@ weak_map.insert(HashableWeak::new(weak.clone()), "bar");
 assert_eq!(weak_map[&HashableWeak::new(weak.clone())], "bar");
 ```
 
-Insertion into other hash-based containers (such as a [`HashSet`])
+Insertion into other hash-based containers (such as a `HashSet`)
 follows similarly.
