@@ -39,7 +39,7 @@
 //! ```
 //!
 //! Insertion into other hash-based containers (such as a [`HashSet`])
-//! follow similarly.
+//! follows similarly.
 //!
 //! [`HashableRc<T>`]: struct.HashableRc.html
 //! [`HashableWeak<T>`]: struct.HashableWeak.html
