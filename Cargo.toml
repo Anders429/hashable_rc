@@ -1,11 +1,11 @@
 [package]
 name = "hashable_rc"
 version = "0.1.0"
-authors = ["Anders Stefan Evensen"]
+authors = ["Anders Evensen"]
 edition = "2018"
+description = "Hashable wrappers for reference countings."
 keywords = ["hash", "reference", "rc", "weak", "equality"]
-license-file = "LICENSE"
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
-[dependencies]
+categories = ["data-structures"]
+license = "MIT"
+repository = "https://github.com/Anders429/hashable_rc"
+readme = "README.md"
