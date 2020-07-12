@@ -1,6 +1,6 @@
 [package]
 name = "hashable_rc"
-version = "0.1.1"
+version = "0.1.2"
 authors = ["Anders Evensen"]
 edition = "2018"
 description = "Hashable wrappers for reference countings."

@@ -2,18 +2,28 @@
 
 //! Hashable wrappers for reference countings.
 //!
-//! Provides hashable wrappers for [`Rc<T>`] and [`Weak<T>`] references
-//! with the types [`HashableRc<T>`] and [`HashableWeak<T>`],
-//! respectively. This allows use of both strong and weak reference
-//! countings in hash-based data structures, such as [`HashMap`] or
-//! [`HashSet`].
+//! Provides hashable wrappers for 
+//! [`Rc<T>`](https://doc.rust-lang.org/std/rc/struct.Rc.html) and
+//! [`Weak<T>`](https://doc.rust-lang.org/std/rc/struct.Weak.html) 
+//! references with the types [`HashableRc<T>`](struct.HashableRc.html)
+//! and [`HashableWeak<T>`](struct.HashableWeak.html), respectively. 
+//! This allows use of both strong and weak reference countings in 
+//! hash-based data structures, such as 
+//! [`HashMap`](https://doc.rust-lang.org/std/collections/struct.HashMap.html)
+//! or
+//! [`HashSet`](https://doc.rust-lang.org/std/collections/struct.HashSet.html).
 //!
 //! # Quick Start
 //!
-//! The most common use cases are wrapping [`Rc<T>`] or [`Weak<T>`] in
-//! [`HashableRc<T>`] or [`HashableWeak<T>`] respectively to be 
+//! The most common use cases are wrapping 
+//! [`Rc<T>`](https://doc.rust-lang.org/std/rc/struct.Rc.html) or 
+//! [`Weak<T>`](https://doc.rust-lang.org/std/rc/struct.Weak.html) in
+//! [`HashableRc<T>`](struct.HashableRc.html) or 
+//! [`HashableWeak<T>`](struct.HashableWeak.html) respectively to be
 //! contained in a hash-based container. An example of using both types
-//! as keys in a [`HashMap`] follows.
+//! as keys in a 
+//! [`HashMap`](https://doc.rust-lang.org/std/collections/struct.HashMap.html)
+//! follows.
 //!
 //! ```
 //! use std::collections::HashMap;
@@ -38,15 +48,9 @@
 //! assert_eq!(weak_map[&HashableWeak::new(weak.clone())], "bar");
 //! ```
 //!
-//! Insertion into other hash-based containers (such as a [`HashSet`])
+//! Insertion into other hash-based containers (such as a 
+//! [`HashSet`](https://doc.rust-lang.org/std/collections/struct.HashSet.html))
 //! follows similarly.
-//!
-//! [`HashableRc<T>`]: struct.HashableRc.html
-//! [`HashableWeak<T>`]: struct.HashableWeak.html
-//! [`HashMap`]: https://doc.rust-lang.org/std/collections/struct.HashMap.html
-//! [`HashSet`]: https://doc.rust-lang.org/std/collections/struct.HashSet.html
-//! [`Rc<T>`]: https://doc.rust-lang.org/std/rc/struct.Rc.html
-//! [`Weak<T>`]: https://doc.rust-lang.org/std/rc/struct.Weak.html
 
 use std::hash::{Hash, Hasher};
 use std::rc::{Rc, Weak};
@@ -58,12 +62,14 @@ fn hash_rc<T, H: Hasher>(rc: Rc<T>, state: &mut H) {
     let _ = unsafe {Rc::from_raw(raw_ptr)};
 }
 
-/// A hashable wrapper around the [`Rc<T>`] type.
+/// A hashable wrapper around the 
+/// [`Rc<T>`](https://doc.rust-lang.org/std/rc/struct.Rc.html) type.
 ///
-/// A hash of a [`HashableRc<T>`] is taken from the underlying pointer.
-/// Therefore, two separate objects that may be considered equal will, 
-/// when contained in a [`HashableRc<T>`], almost always have different
-/// hashed values. For example, the following holds:
+/// A hash of a [`HashableRc<T>`](struct.HashableRc.html) is taken from
+/// the underlying pointer. Therefore, two separate objects that may be
+/// considered equal will, when contained in a
+/// [`HashableRc<T>`](struct.HashableRc.html), almost always have 
+/// different hashed values. For example, the following holds:
 ///
 /// ```
 /// use std::collections::hash_map::DefaultHasher;
@@ -94,8 +100,8 @@ fn hash_rc<T, H: Hasher>(rc: Rc<T>, state: &mut H) {
 ///            hash(&HashableRc::new(rc1.clone())));
 /// ```
 ///
-/// Similarly, equality of [`HashableRc<T>`] objects is done by
-/// evaluating pointer equality (using 
+/// Similarly, equality of [`HashableRc<T>`](struct.HashableRc.html)
+/// objects is done by evaluating pointer equality (using 
 /// [`ptr_eq()`](https://doc.rust-lang.org/std/rc/struct.Rc.html#method.ptr_eq)).
 /// The equality is not from the value itself, but from the pointer.
 ///
@@ -124,14 +130,17 @@ pub struct HashableRc<T> {
 }
 
 impl <T> HashableRc<T> {
-    /// Constructs a new [`HashableRc<T>`] wrapping an [`Rc<T>`].
+    /// Constructs a new [`HashableRc<T>`](struct.HashableRc.html) 
+    /// wrapping an 
+    /// [`Rc<T>`](https://doc.rust-lang.org/std/rc/struct.Rc.html).
     pub fn new(value: Rc<T>) -> Self {
         HashableRc {value}
     }
 }
 
 impl <T> Hash for HashableRc<T> {
-    /// Generate a hash value for the [`HashableRc<T>`].
+    /// Generate a hash value for the 
+    /// [`HashableRc<T>`](struct.HashableRc.html).
     ///
     /// This hash value is based on the underlying pointer. Two unique 
     /// objects will most likely have different hashes, even if their 
@@ -142,7 +151,8 @@ impl <T> Hash for HashableRc<T> {
 }
 
 impl <T> PartialEq for HashableRc<T> {
-    /// Equality for two [`HashableRc<T>`] objects.
+    /// Equality for two [`HashableRc<T>`](struct.HashableRc.html) 
+    /// objects.
     ///
     /// Equality is determined by pointer equality, rather than value 
     /// equality. Objects are only considered equal if they point to 
@@ -152,12 +162,15 @@ impl <T> PartialEq for HashableRc<T> {
     }
 }
 
-/// A hashable wrapper around the [`Weak<T>`] type.
+/// A hashable wrapper around the 
+/// [`Weak<T>`](https://doc.rust-lang.org/std/rc/struct.Weak.html)
+/// type.
 ///
-/// A hash of a [`HashableWeak<T>`] is taken from the underlying pointer.
-/// Therefore, two separate objects that may be considered equal will, 
-/// when contained in a [`HashableWeak<T>`], almost always have different
-/// hashed values. For example, the following holds:
+/// A hash of a [`HashableWeak<T>`](struct.HashableWeak.html) is taken
+/// from the underlying pointer. Therefore, two separate objects that
+/// may be considered equal will, when contained in a
+/// [`HashableWeak<T>`](struct.HashableWeak.html), almost always have
+/// different hashed values. For example, the following holds:
 ///
 /// ```
 /// use std::collections::hash_map::DefaultHasher;
@@ -188,7 +201,8 @@ impl <T> PartialEq for HashableRc<T> {
 ///            hash(&HashableWeak::new(Rc::downgrade(&rc1))));
 /// ```
 ///
-/// Similarly, equality of [`HashableWeak<T>`] objects is done by
+/// Similarly, equality of 
+/// [`HashableWeak<T>`](struct.HashableWeak.html) objects is done by
 /// evaluating pointer equality (using 
 /// [`ptr_eq()`](https://doc.rust-lang.org/std/rc/struct.Weak.html#method.ptr_eq)).
 /// The equality is not from the value itself, but from the pointer.
@@ -213,9 +227,12 @@ impl <T> PartialEq for HashableRc<T> {
 ///            HashableWeak::new(Rc::downgrade(&rc1)));
 /// ```
 ///
-/// Since [`Weak<T>`] is a weak reference, the underlying value is not
-/// guaranteed to exist. A [`Weak<T>`] that is empty can still be wrapped
-/// in a [`HashableWeak<T>`].
+/// Since 
+/// [`Weak<T>`](https://doc.rust-lang.org/std/rc/struct.Weak.html) is a
+/// weak reference, the underlying value is not guaranteed to exist. A 
+/// [`Weak<T>`](https://doc.rust-lang.org/std/rc/struct.Weak.html) that
+/// is empty can still be wrapped in a
+/// [`HashableWeak<T>`](struct.HashableWeak.html).
 ///
 /// ```
 /// use std::collections::hash_map::DefaultHasher;
@@ -255,14 +272,17 @@ pub struct HashableWeak<T> {
 }
 
 impl <T> HashableWeak<T> {
-    /// Constructs a new [`HashableWeak<T>`] wrapping a [`Weak<T>`].
+    /// Constructs a new [`HashableWeak<T>`](struct.HashableWeak.html)
+    /// wrapping a
+    /// [`Weak<T>`](https://doc.rust-lang.org/std/rc/struct.Weak.html).
     pub fn new(value: Weak<T>) -> Self {
         HashableWeak {value}
     }
 }
 
 impl <T> Hash for HashableWeak<T> {
-    /// Generate a hash value for the [`HashableWeak<T>`].
+    /// Generate a hash value for the 
+    /// [`HashableWeak<T>`](struct.HashableWeak.html).
     ///
     /// This hash value is based on the underlying pointer. Two unique 
     /// objects will most likely have different hashes, even if their 
@@ -281,7 +301,8 @@ impl <T> Hash for HashableWeak<T> {
 }
 
 impl <T> PartialEq for HashableWeak<T> {
-    /// Equality for two [`HashableWeak<T>`] objects.
+    /// Equality for two [`HashableWeak<T>`](struct.HashableWeak.html)
+    /// objects.
     ///
     /// Equality is determined by pointer equality, rather than value 
     /// equality. Objects are only considered equal if they point to 
