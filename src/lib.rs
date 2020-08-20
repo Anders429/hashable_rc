@@ -136,6 +136,11 @@ impl <T> HashableRc<T> {
     pub fn new(value: Rc<T>) -> Self {
         HashableRc {value}
     }
+
+    /// Returns a clone of the wrapped `Rc<T>` without consuming `self`.
+    pub fn get_cloned(&self) -> Rc<T> {
+        self.value.clone()
+    }
 }
 
 impl <T> Hash for HashableRc<T> {
@@ -278,6 +283,8 @@ impl <T> HashableWeak<T> {
     pub fn new(value: Weak<T>) -> Self {
         HashableWeak {value}
     }
+
+
 }
 
 impl <T> Hash for HashableWeak<T> {
@@ -343,6 +350,20 @@ mod tests {
         
         assert_ne!(HashableRc::new(rc1.clone()), HashableRc::new(rc2.clone()));
         assert_eq!(HashableRc::new(rc1.clone()), HashableRc::new(rc1.clone()));
+    }
+
+    #[test]
+    fn test_hashable_rc_get_clone() {
+        let rc1 = Rc::new(42);
+        let rc2 = Rc::new(42);
+        let rc1_hashable = HashableRc::new(rc1.clone());
+
+        assert_eq!(rc1_hashable.get_cloned(), rc1);
+        assert_eq!(rc1_hashable.get_cloned(), rc2);
+        // Round trip follows from above, but included for completeness.
+        assert_eq!(HashableRc::new(rc1_hashable.get_cloned()), rc1_hashable);
+        // Round trip the other direction.
+        assert_eq!(*rc1_hashable.get_cloned(), 42);
     }
     
     #[test]
