@@ -13,7 +13,7 @@ The most common use cases are wrapping `Rc<T>` or `Weak<T>` in
 contained in a hash-based container. An example of using both types
 as keys in a `HashMap` follows.
 
-```
+```rust
 use std::collections::HashMap;
 use std::rc::{Rc, Weak};
 
